@@ -16,7 +16,7 @@ all:$(OUT)
 	echo Bulding done !
 
 clean:
-	del $(CLEAN_TARGET)
+	-del $(CLEAN_TARGET)
 	echo Cleaning done !
 
 QUIZ = X:\challenge3\objfiles\Peter_Abdelaziz_Randa_Omar.o
