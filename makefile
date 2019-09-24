@@ -1,34 +1,39 @@
+#Generic folders
+SOURCEDIR = ./src
+HEADERDIR = ./Inc
+DEPENDENCIESDIR = Dependencies/
+OUT = App.exe
 vpath %.c ./src
-vpath %.h ./inc
 
-OUT := final_zeft.exe
+# Compiler and linker
+CC = gcc
+LINKER = gcc
 
-CC := gcc
-LINKER := gcc
-INCDIRS := -I.
+# all files (sources - deps - objs)
+SRC_FILES = $(subst $(SOURCEDIR)/,,$(wildcard $(SOURCEDIR)/*.c))
+OBJ_FILES = $(SRC_FILES:.c=.o) 
+QUIZ = X:\challenge3\objfiles\Peter_Abdelaziz_Randa_Omar.o
+TEMP = $(SOURCE_FILES:.c=.d)
+DEP_FILES = $(addprefix $(DEPENDENCIESDIR)\,$(TEMP))
+CLEAN_TARGET = $(OUT) $(OBJ_FILES) $(DEP_FILES)
 
-SRC_FILES := $(wildcard *.c) 
-OBJ_FILES := $(patsubst %.c,%.o,$(SRC_FILES))
-DEP_FILES := $(patsubst %.c,%.d,$(SRC_FILES))
-CLEAN_TARGET = $(OUT) $(OBJ_FILES)
-
+#generating the output
 all:$(OUT)
 	echo Bulding done !
 
+#clean the disk
 clean:
-	-del $(CLEAN_TARGET)
+	del $(CLEAN_TARGET)
 	echo Cleaning done !
 
-QUIZ = X:\challenge3\objfiles\Peter_Abdelaziz_Randa_Omar.o
-
-$(OUT): $(OBJ_FILES) $(QUIZ)
-	$(LINKER) $^ -o $@
+#build if any file changed
+$(OUT): $(OBJ_FILES) $(QUIZ) $(DEP_FILES)
+	$(LINKER) $^ -o $@ 
 	echo Linking done !
 
-%.o: %.c
-	$(CC) $(INCDIRS) -c $< -o $@
-
-%.d: %.c
-	$(CC) $(INCDIRS) -MM $< > $@
-
+#build every c file individually
+%.o: %.c  
+	$(CC) -I$(HEADERDIR) -c $< -o $@
+	$(CC) -MM -I$(HEADERDIR) $< > $(DEPENDENCIESDIR)\$*.d
+	
 -include $(DEP_FILES)
