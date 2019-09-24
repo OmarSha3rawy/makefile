@@ -1,7 +1,7 @@
 #Generic folders
 SOURCEDIR = ./src
 HEADERDIR = ./Inc
-DEPENDENCIESDIR = Dependencies/
+DEPENDENCIESDIR = Dependencies
 OUT = App.exe
 vpath %.c ./src
 
@@ -13,9 +13,9 @@ LINKER = gcc
 SRC_FILES = $(subst $(SOURCEDIR)/,,$(wildcard $(SOURCEDIR)/*.c))
 OBJ_FILES = $(SRC_FILES:.c=.o) 
 QUIZ = X:\challenge3\objfiles\Peter_Abdelaziz_Randa_Omar.o
-TEMP = $(SOURCE_FILES:.c=.d)
+TEMP = $(SRC_FILES:.c=.d)
 DEP_FILES = $(addprefix $(DEPENDENCIESDIR)\,$(TEMP))
-CLEAN_TARGET = $(OUT) $(OBJ_FILES) $(DEP_FILES)
+CLEAN_TARGET =$(DEP_FILES) $(OUT) $(OBJ_FILES) 
 
 #generating the output
 all:$(OUT)
@@ -26,8 +26,9 @@ clean:
 	del $(CLEAN_TARGET)
 	echo Cleaning done !
 
+
 #build if any file changed
-$(OUT): $(OBJ_FILES) $(QUIZ) $(DEP_FILES)
+$(OUT): $(OBJ_FILES) $(QUIZ) #$(DEP_FILES)
 	$(LINKER) $^ -o $@ 
 	echo Linking done !
 
@@ -37,3 +38,6 @@ $(OUT): $(OBJ_FILES) $(QUIZ) $(DEP_FILES)
 	$(CC) -MM -I$(HEADERDIR) $< > $(DEPENDENCIESDIR)\$*.d
 	
 -include $(DEP_FILES)
+
+print-% :
+	@echo $* = $($*)
