@@ -1,0 +1,2 @@
+1 - you must specify the pathes correctly for all folders 
+2 - you must allocate the object file in the directory inside the code or move it in the execution folder
